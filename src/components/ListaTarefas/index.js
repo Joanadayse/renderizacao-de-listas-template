@@ -12,15 +12,39 @@ import bin from "../../assets/bin.png";
 
 export function ListaTarefas() {
   const [novaTarefa, setNovaTarefa] = useState("");
+  const [lista,setLista]=useState(["comer", "dormir", "dançar"])
+
+  const tarefas= lista.map((tarefa)=>{return (
+    <ListaContainer>
+    <ul>
+      <Tarefa>
+        <p>{tarefa}</p>
+        <RemoveButton onClick={()=>removeTarefa(tarefa)}>
+          <img src={bin} alt="" width="16px" />
+        </RemoveButton>
+      </Tarefa>
+    </ul>
+  </ListaContainer>
+  )
+  })
 
 
   const onChangeTarefa = (event) => {
     setNovaTarefa(event.target.value);
   };
 
-  const adicionaTarefa = () => {};
+  // Função para adicionar a nova tarefa digitada ao estado LISTA quando o botão "adicionar for clicado"
+  const adicionaTarefa = () => {
+    const novaLista=[...lista,novaTarefa]
+    setLista(novaLista);
+    setNovaTarefa("");
+  };
 
-  const removeTarefa = () => {};
+  const removeTarefa = (tarefa) => {
+    const tarefasFilter= lista.filter((novaTarefa)=>novaTarefa !== tarefa)
+    setLista(tarefasFilter)
+
+  };
 
   return (
     <ListaTarefasContainer>
@@ -30,19 +54,10 @@ export function ListaTarefas() {
           value={novaTarefa}
           onChange={onChangeTarefa}
         />
-        <AddTaskButton>Adicionar</AddTaskButton>
+        <AddTaskButton onClick={adicionaTarefa}>Adicionar</AddTaskButton>
       </InputContainer>
-
-      <ListaContainer>
-        <ul>
-          <Tarefa>
-            <p>Nova tarefa</p>
-            <RemoveButton>
-              <img src={bin} alt="" width="16px" />
-            </RemoveButton>
-          </Tarefa>
-        </ul>
-      </ListaContainer>
+     {tarefas}
+      
     </ListaTarefasContainer>
   );
 }
